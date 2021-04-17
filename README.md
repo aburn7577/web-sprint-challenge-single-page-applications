@@ -38,19 +38,22 @@ Demonstrate your understanding of this week's concepts by answering the followin
 
 ### Task 1: Project Set Up
 
-- [ ] Create a forked copy of this project
+- [X] Create a forked copy of this project
 - [ ] Add your team lead as collaborator on Github
 - [ ] Clone your OWN version of the repository (Not Lambda's by mistake!)
-- [ ] Create a new branch: `git checkout -b <firstName-lastName>`
-- [ ] Implement the project on your newly created `<firstName-lastName>` branch, committing changes regularly
-- [ ] Push commits: `git push origin <firstName-lastName>`
-
+- [X] Create a new branch: `git checkout -b <firstName-lastName>`
+- [X] Implement the project on your newly created `<firstName-lastName>` branch, committing changes regularly
+- [X] Push commits: `git push origin <firstName-lastName>`
+my own notes
+- install npm
+- install axios --
+- install cypress-- npm install cypress --save-dev
 ### Task 2: Project Requirements
 
 Your finished project must include all of the following requirements:
 
-- [ ] A homepage that has a "/" route and links to your form (button, nav bar, or any other type of link is acceptable)
-- [ ] A form with a "/pizza" route
+- [X] A homepage that has a "/" route and links to your form (button, nav bar, or any other type of link is acceptable)
+- [X] A form with a "/pizza" route
 - [ ] A name text input field
 - [ ] Validation for name - name must be at least 2 characters
 - [ ] A dropdown for pizza size
