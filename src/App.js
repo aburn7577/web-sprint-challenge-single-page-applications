@@ -3,6 +3,8 @@ import { Route, Link, Switch } from 'react-router-dom'
 import Homepage from './components/homepage'
 import Order from './components/order'
 import Axios from 'axios'
+import * as yup from 'yup'
+import schema from './validation/formSchema'
 
 const startFormValues = {
   // text inputs//
@@ -18,6 +20,10 @@ const startFormValues = {
   extraCheese: false,
   pinapple: false,
 }
+const startFormErrors = {
+  name: '',
+  size: '',
+}
 
 const startOrders = []
 const startDisabled = true
@@ -27,17 +33,18 @@ const App = () => {
   const [orders, setOrders] = useState(startOrders)
   const [formValues, setFormValues] = useState(startFormValues)
   const [disabled, setDisabled] = useState(startDisabled)
+  const [formErrors, setFormErrors] = useState(startFormErrors)
 
-  const getOrders = () => {
-    Axios.get('https://reqres.in/api/order')
-      .then(res => {
-        setOrders(res.data)
-      })
-      .catch(error => {
-        console.log(error)
-        console.log('get orders didnt work')
-      })
-  }
+  // const getOrders = () => {
+  //   Axios.get('https://reqres.in/api/order')
+  //     .then(res => {
+  //       setOrders(res.data)
+  //     })
+  //     .catch(error => {
+  //       console.log(error)
+  //       console.log('get orders didnt work')
+  //     })
+  // }
   const postNewOrder = newOrder => {
     Axios.post('https://reqres.in/api/order', newOrder)
       .then(res => {
@@ -52,7 +59,23 @@ const App = () => {
   }
   //Event Handlers
   const inputChange = (name, value) => {
-    setFormValues({ ...formValues, [name]: value })
+    yup.reach(schema, name)
+      .validate(value)
+      .then(() => {
+        setFormErrors({
+          ...formErrors,
+          [name]: '',
+        })
+      })
+      .catch(err => {
+        setFormErrors({
+          ...formErrors,
+          [name]: err.errors[0]
+        })
+      })
+    setFormValues({
+      ...formValues, [name]: value
+    })
   }
   const formSubmit = () => {
     const newOrder = {
@@ -65,13 +88,16 @@ const App = () => {
     postNewOrder(newOrder)
   }
   //side Effects
-  useEffect(() => {
-    getOrders()
-  }, [])
+  // useEffect(() => {
+  //   getOrders()
+  // }, [])
 
   useEffect(() => {
-
-  }, [])
+    schema.isValid(formValues)
+      .then(valid => {
+        setDisabled(!valid)
+      })
+  }, [formValues])
 
 
 
@@ -92,8 +118,9 @@ const App = () => {
             values={formValues}
             change={inputChange}
             submit={formSubmit}
-          // disabled={disabled}
-          // errors={formErrors}
+            orders={orders}
+            disabled={disabled}
+            errors={formErrors}
           />
         </Route>
       </Switch>
